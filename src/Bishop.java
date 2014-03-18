@@ -11,5 +11,15 @@ public class Bishop extends Piece {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String toString(){
+		if (team == 0){
+			return "BSHb";
+		}
+		else{
+			return "BSHw";
+		}
+	}
 
 }

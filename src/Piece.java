@@ -9,4 +9,6 @@ public abstract class Piece {
 	
 	public abstract String[] checkMovement();
 	
+	public abstract String toString();
+	
 }

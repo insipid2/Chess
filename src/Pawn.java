@@ -12,4 +12,14 @@ public class Pawn extends Piece{
 		return null;
 	}
 	
+	@Override
+	public String toString(){
+		if (team == 0){
+			return "PWNb";
+		}
+		else{
+			return "PWNw";
+		}
+	}
+	
 }
