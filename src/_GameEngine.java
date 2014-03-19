@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 public class _GameEngine {
 
@@ -5,10 +9,45 @@ public class _GameEngine {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Board tester;
-		tester = newGame();
-		tester.display();
+		
+		Board gameBoard;
+		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		boolean gameInProgress = true;
+		int colorTurn = 0;  // 0 = black, 1 = white
+		int curPieceX = 0, curPieceY = 0;
+		int curTargetX = 0, curTargetY = 0;
+		
+		
+		gameBoard = newGame();
+		
+		System.out.println("         Welcome to Super Battle Chess 2D VII!!!");
+		System.out.println();
+		gameBoard.display();
+		
+		while(gameInProgress){
+			// black's turn
+			if(colorTurn == 0){
+				System.out.println("Black's turn.");
+				System.out.print("Choose a piece to move: ");
+				try{
+					curPieceX = input.read();
+		        }catch(IOException e){
+		            System.err.println("Invalid Format!");
+		        }
+				
+				
+				
+			}
+			// white's turn
+			else{
+				
+			}
+			
+		}
+		
+		
+		
+		
 	}
 	
 	public static Board newGame(){
