@@ -28,18 +28,41 @@ public class _GameEngine {
 			// black's turn
 			if(colorTurn == 0){
 				System.out.println("Black's turn.");
-				System.out.print("Choose a piece to move: ");
+				System.out.println("Choose a piece to move.");
+				System.out.print("Enter the row number: ");
 				try{
 					curPieceX = input.read();
 		        }catch(IOException e){
 		            System.err.println("Invalid Format!");
 		        }
-				
-				
+				System.out.println();
+				System.out.print("Enter the colum letter: ");
+				try{
+					curPieceY = input.read();
+		        }catch(IOException e){
+		            System.err.println("Invalid Format!");
+		        }
+				System.out.println();
 				
 			}
 			// white's turn
 			else{
+				System.out.println("White's turn.");
+				System.out.println("Choose a piece to move.");
+				System.out.print("Enter the row number: ");
+				try{
+					curPieceX = input.read();
+		        }catch(IOException e){
+		            System.err.println("Invalid Format!");
+		        }
+				System.out.println();
+				System.out.print("Enter the colum letter: ");
+				try{
+					curPieceY = input.read();
+		        }catch(IOException e){
+		            System.err.println("Invalid Format!");
+		        }
+				System.out.println();
 				
 			}
 			
