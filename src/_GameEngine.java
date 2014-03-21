@@ -1,6 +1,5 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 
 public class _GameEngine {
@@ -11,16 +10,17 @@ public class _GameEngine {
 	public static void main(String[] args) {
 		
 		Board gameBoard;
-		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		// BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		Scanner input = new Scanner(System.in);
 		boolean gameInProgress = true;
 		int colorTurn = 0;  // 0 = black, 1 = white
-		int curPieceX = 0, curPieceY = 0;
-		int curTargetX = 0, curTargetY = 0;
+		int curPieceX, curPieceY = 0;
+		int curTargetX, curTargetY = 0;
 		
 		
 		gameBoard = newGame();
 		
-		System.out.println("         Welcome to Super Battle Chess 2D VII!!!");
+		System.out.println("           Welcome to Super Battle Chess 2D VII!!!");
 		System.out.println();
 		gameBoard.display();
 		
@@ -30,47 +30,18 @@ public class _GameEngine {
 				System.out.println("Black's turn.");
 				System.out.println("Choose a piece to move.");
 				System.out.print("Enter the row number: ");
-				try{
-					curPieceX = input.read();
-		        }catch(IOException e){
-		            System.err.println("Invalid Format!");
-		        }
+				while(!input.hasNextInt()){
+					System.out.println("It must be number doooooooddd!!!");
+				}
 				System.out.println();
 				System.out.print("Enter the colum letter: ");
-				try{
-					curPieceY = input.read();
-		        }catch(IOException e){
-		            System.err.println("Invalid Format!");
-		        }
+				
 				System.out.println();
 				
 			}
-			// white's turn
-			else{
-				System.out.println("White's turn.");
-				System.out.println("Choose a piece to move.");
-				System.out.print("Enter the row number: ");
-				try{
-					curPieceX = input.read();
-		        }catch(IOException e){
-		            System.err.println("Invalid Format!");
-		        }
-				System.out.println();
-				System.out.print("Enter the colum letter: ");
-				try{
-					curPieceY = input.read();
-		        }catch(IOException e){
-		            System.err.println("Invalid Format!");
-		        }
-				System.out.println();
-				
-			}
-			
+
 		}
-		
-		
-		
-		
+			
 	}
 	
 	public static Board newGame(){
