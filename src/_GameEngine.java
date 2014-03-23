@@ -14,6 +14,13 @@ public class _GameEngine {
 		Scanner input = new Scanner(System.in);
 		boolean gameInProgress = true;
 		int colorTurn = 0;  // 0 = black, 1 = white
+		
+		String tempInput = "";  // temporary storage for player input
+		int tempInt = 0;
+		char tempChar = 'a';
+		boolean rowInputGood = false, colInputGood = false; // whether the player input is valid
+		
+		
 		int curPieceX, curPieceY = 0;
 		int curTargetX, curTargetY = 0;
 		
@@ -27,16 +34,33 @@ public class _GameEngine {
 		while(gameInProgress){
 			// black's turn
 			if(colorTurn == 0){
-				System.out.println("Black's turn.");
-				System.out.println("Choose a piece to move.");
-				System.out.print("Enter the row number: ");
-				while(!input.hasNextInt()){
-					System.out.println("It must be number doooooooddd!!!");
+				while(!rowInputGood){					
+					System.out.println("Black's turn, choose a piece to move.");
+					System.out.print("Enter the row number: ");
+					tempInput = input.next();
+					try{
+						tempInt = Integer.parseInt(tempInput);
+						if(tempInt >= 0 || tempInt < 8){
+							rowInputGood = true;
+						}
+					}
+					catch(NumberFormatException nfe){
+						System.out.println("dood. numbers only, 0 to 7");
+					}		
+						
+					
 				}
-				System.out.println();
-				System.out.print("Enter the colum letter: ");
+				curPieceX = tempInt;
+				rowInputGood = false;
 				
-				System.out.println();
+				while(!colInputGood){
+					System.out.println();
+					System.out.println("Black's turn, choose a piece to move.");
+					System.out.print("Enter the colum letter: ");
+					
+					System.out.println();
+				}
+				
 				
 			}
 
