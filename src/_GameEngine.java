@@ -45,7 +45,7 @@ public class _GameEngine {
 						}
 					}
 					catch(NumberFormatException nfe){
-						System.out.println("dood. numbers only, 0 to 7");
+						System.out.println("  *dood. numbers only, 0 to 7");
 					}		
 						
 					
@@ -53,13 +53,27 @@ public class _GameEngine {
 				curPieceX = tempInt;
 				rowInputGood = false;
 				
-				while(!colInputGood){
-					System.out.println();
+				while(!colInputGood){					
 					System.out.println("Black's turn, choose a piece to move.");
-					System.out.print("Enter the colum letter: ");
+					System.out.print("Enter the column number: ");
+					tempInput = input.next();
+					try{
+						tempChar = tempInput.charAt(0);
+						switch(tempChar){
+						case 'a': case 'b': case 'c':
+						case 'd': case 'e': case 'f':
+						case 'g': case 'h':
+							colInputGood = true;
+						}
+					}
+					catch(NumberFormatException nfe){
+						System.out.println("  *dood. numbers only, 0 to 7");
+					}		
+						
 					
-					System.out.println();
 				}
+				curPieceX = tempInt;
+				rowInputGood = false;
 				
 				
 			}
