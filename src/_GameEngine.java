@@ -9,6 +9,8 @@ public class _GameEngine {
 	 */
 	public static void main(String[] args) {
 		
+		// VARIABLES, SET UP
+		
 		Board gameBoard;
 		// BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		Scanner input = new Scanner(System.in);
@@ -25,6 +27,7 @@ public class _GameEngine {
 		int curTargetX, curTargetY = 0;
 		
 		
+		// ACTION!
 		gameBoard = newGame();
 		
 		System.out.println("           Welcome to Super Battle Chess 2D VII!!!");
@@ -82,7 +85,7 @@ public class _GameEngine {
 			
 	}
 	
-	public static Board newGame(){
+	private static Board newGame(){
 		Board chessBoard = new Board();
 		Piece temp;
 		
