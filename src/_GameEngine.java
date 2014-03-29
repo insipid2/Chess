@@ -21,7 +21,7 @@ public class _GameEngine {
 		int tempInt = 0;
 		char tempChar = 'a';
 		boolean rowInputGood = false, colInputGood = false; // whether the player input is valid
-		
+		boolean validPiece = false;
 		
 		int curPieceX, curPieceY = 0;
 		int curTargetX, curTargetY = 0;
@@ -37,46 +37,48 @@ public class _GameEngine {
 		while(gameInProgress){
 			// black's turn
 			if(colorTurn == 0){
-				while(!rowInputGood){					
-					System.out.println("Black's turn, choose a piece to move.");
-					System.out.print("Enter the row number: ");
-					tempInput = input.next();
-					try{
-						tempInt = Integer.parseInt(tempInput);
-						if(tempInt >= 0 || tempInt < 8){
-							rowInputGood = true;
+				while(!validPiece){
+					while(!rowInputGood){					
+						System.out.println("Black's turn, choose a piece to move.");
+						System.out.print("Enter the row number: ");
+						tempInput = input.next();
+						try{
+							tempInt = Integer.parseInt(tempInput);
+							if(tempInt >= 0 || tempInt < 8){
+								rowInputGood = true;
+							}
 						}
-					}
-					catch(NumberFormatException nfe){
-						System.out.println("  *dood. numbers only, 0 to 7");
-					}		
+						catch(NumberFormatException nfe){
+							System.out.println("  *dood. numbers only, 0 to 7");
+						}		
+							
 						
+					}
+					curPieceX = tempInt;
+					
+					while(!colInputGood){					
+						System.out.println("Black's turn, choose a piece to move.");
+						System.out.print("Enter the column number: ");
+						tempInput = input.next();
+						try{
+							tempChar = tempInput.charAt(0);
+							switch(tempChar){
+							case 'a': case 'b': case 'c':
+							case 'd': case 'e': case 'f':
+							case 'g': case 'h':
+								colInputGood = true;
+							}
+						}
+						catch(NumberFormatException nfe){
+							System.out.println("  *dood. letters only, a to h");
+						}		
+							
+						
+					}
+					curPieceY = Character.getNumericValue(tempChar);					
 					
 				}
-				curPieceX = tempInt;
-				rowInputGood = false;
 				
-				while(!colInputGood){					
-					System.out.println("Black's turn, choose a piece to move.");
-					System.out.print("Enter the column number: ");
-					tempInput = input.next();
-					try{
-						tempChar = tempInput.charAt(0);
-						switch(tempChar){
-						case 'a': case 'b': case 'c':
-						case 'd': case 'e': case 'f':
-						case 'g': case 'h':
-							colInputGood = true;
-						}
-					}
-					catch(NumberFormatException nfe){
-						System.out.println("  *dood. numbers only, 0 to 7");
-					}		
-						
-					
-				}
-				curPieceX = tempInt;
-				rowInputGood = false;
 				
 				
 			}
