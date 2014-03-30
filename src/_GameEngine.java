@@ -87,6 +87,18 @@ public class _GameEngine {
 			
 	}
 	
+	private static boolean concedeGame(Scanner input){
+		System.out.println("Would you like to make a move, or concede the game?");
+		System.out.print("Enter 1 to take turn, or 0 to concede game: ");
+		int concede = Integer.parseInt(input.next());
+		if(concede == 1){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	
 	private static Board newGame(){
 		Board chessBoard = new Board();
 		Piece temp;
