@@ -87,16 +87,30 @@ public class _GameEngine {
 			
 	}
 	
-	private static boolean concedeGame(Scanner input){
-		System.out.println("Would you like to make a move, or concede the game?");
-		System.out.print("Enter 1 to take turn, or 0 to concede game: ");
-		int concede = Integer.parseInt(input.next());
-		if(concede == 1){
-			return false;
-		}
-		else{
-			return true;
-		}
+	
+	
+	private static boolean concedeGame(int input){		
+		return input == 1;
+	}
+	
+	private boolean validRowColInput(int input){
+		return (input >= 0 && input <= 7);
+	}
+	
+	int rowInputToBoard (int input){
+		return 7 - input;
+	}
+	
+	int rowBoardToOutput (int input){
+		return 7 - input;
+	}
+	
+	private int colInputToBoard (char input){
+		return Character.valueOf(input) - 97;
+	}
+	
+	private char colBoardToOutput (int input){
+		return (char)(input + 97);
 	}
 	
 	private static Board newGame(){
