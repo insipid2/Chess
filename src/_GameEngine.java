@@ -1,127 +1,145 @@
 import java.io.IOException;
 import java.util.Scanner;
 
-
 public class _GameEngine {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+
 		// VARIABLES, SET UP
-		
+
 		Board gameBoard;
-		// BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		// BufferedReader input = new BufferedReader(new
+		// InputStreamReader(System.in));
 		Scanner input = new Scanner(System.in);
 		boolean gameInProgress = true;
-		int colorTurn = 0;  // 0 = black, 1 = white
-		
-		String tempInput = "";  // temporary storage for player input
+		String colorTurn = "b"; // b = black, w = white
+
+		String tempInput = ""; // temporary storage for player input
 		int tempInt = 0;
 		char tempChar = 'a';
-		boolean rowInputGood = false, colInputGood = false; // whether the player input is valid
+		boolean rowInputGood = false, colInputGood = false; // whether the
+															// player input is
+															// valid
 		boolean validPiece = false;
-		
+
 		int curPieceX, curPieceY = 0;
 		int curTargetX, curTargetY = 0;
-		
-		
+
 		// ACTION!
 		gameBoard = newGame();
-		
-		System.out.println("           Welcome to Super Battle Chess 2D VII!!!");
+
+		System.out
+				.println("           Welcome to Super Battle Chess 2D VII!!!");
 		System.out.println();
 		gameBoard.display();
-		
-		while(gameInProgress){
-			// black's turn
-			if(colorTurn == 0){
-				while(!validPiece){
-					while(!rowInputGood){					
-						System.out.println("Black's turn, choose a piece to move.");
-						System.out.print("Enter the row number: ");
-						tempInput = input.next();
-						try{
-							tempInt = Integer.parseInt(tempInput);
-							if(tempInt >= 0 || tempInt < 8){
-								rowInputGood = true;
-							}
-						}
-						catch(NumberFormatException nfe){
-							System.out.println("  *dood. numbers only, 0 to 7");
-						}		
-							
+
+		while (gameInProgress) {
+			System.out.println("Player " + colorTurn + "\'s turn.");
+			System.out.println("Enter 1 to take turn, or 0 to concede game");
+			
+			
+			
+
+			// piece selection loop
+			while (!validPiece) {
+				
+				// 
+				while (!rowInputGood) {
+					System.out.println("Player " + colorTurn + "\'s turn, choose a piece to move.");
+					System.out.print("Enter the row number: ");
+					tempInput = input.next();
+					try {
+						tempInt = rowInputToBoard(Integer.parseInt(tempInput));
+						rowInputGood = true;
 						
+					} catch (NumberFormatException nfe) {
+						System.out.println("  *dood. numbers only, 0 to 7");
 					}
-					curPieceX = tempInt;
-					
-					while(!colInputGood){					
-						System.out.println("Black's turn, choose a piece to move.");
-						System.out.print("Enter the column number: ");
-						tempInput = input.next();
-						try{
-							tempChar = tempInput.charAt(0);
-							switch(tempChar){
-							case 'a': case 'b': case 'c':
-							case 'd': case 'e': case 'f':
-							case 'g': case 'h':
-								colInputGood = true;
-							}
-						}
-						catch(NumberFormatException nfe){
-							System.out.println("  *dood. letters only, a to h");
-						}		
-							
-						
-					}
-					curPieceY = Character.getNumericValue(tempChar);					
-					
+
 				}
+				curPieceX = tempInt;
 				
-				
-				
+
+				while (!colInputGood) {
+					System.out.println("Black's turn, choose a piece to move.");
+					System.out.print("Enter the column number: ");
+					tempInput = input.next();
+					try {
+						tempChar = tempInput.charAt(0);
+						switch (tempChar) {
+						case 'a':
+						case 'b':
+						case 'c':
+						case 'd':
+						case 'e':
+						case 'f':
+						case 'g':
+						case 'h':
+							colInputGood = true;
+						}
+					} catch (NumberFormatException nfe) {
+						System.out.println("  *dood. letters only, a to h");
+					}
+
+				}
+				curPieceY = Character.getNumericValue(tempChar);
+
 			}
 
 		}
-			
+
 	}
-	
-	
-	
-	private static boolean concedeGame(int input){		
+
+	private static boolean concedeGame(int input) {
 		return input == 1;
 	}
-	
-	private boolean validRowColInput(int input){
+
+	private static boolean validRowColInput(int input) {
 		return (input >= 0 && input <= 7);
 	}
-	
-	int rowInputToBoard (int input){
+
+	private static int rowInputToBoard(int input) {
 		return 7 - input;
 	}
-	
-	int rowBoardToOutput (int input){
+
+	private static int rowBoardToOutput(int input) {
 		return 7 - input;
 	}
-	
-	private int colInputToBoard (char input){
+
+	private static int colInputToBoard(char input) {
 		return Character.valueOf(input) - 97;
 	}
-	
-	private char colBoardToOutput (int input){
-		return (char)(input + 97);
+
+	private static char colBoardToOutput(int input) {
+		return (char) (input + 97);
 	}
 	
-	private static Board newGame(){
+	private static boolean continueToNext(int input) {
+		return (input == 1);
+	}
+	
+	private static int stringToOneZero (String input){
+		int tempInt = Integer.parseInt(input);
+		if (tempInt == 1 || tempInt == 0){
+			return tempInt;
+		}
+		else{
+			return -1;
+		}
+	}
+
+	private static Board newGame() {
 		Board chessBoard = new Board();
 		Piece temp;
-		
+
 		// BLACK (0) - placing pieces
 		temp = new Rook(0);
 		chessBoard.addPiece(0, 0, temp);
 		temp = new Knight(0);
-		chessBoard.addPiece(0, 1, temp);		
+		chessBoard.addPiece(0, 1, temp);
 		temp = new Bishop(0);
 		chessBoard.addPiece(0, 2, temp);
 		temp = new Queen(0);
@@ -134,16 +152,16 @@ public class _GameEngine {
 		chessBoard.addPiece(0, 6, temp);
 		temp = new Rook(0);
 		chessBoard.addPiece(0, 7, temp);
-		for(int i = 0; i < 8; i++){
+		for (int i = 0; i < 8; i++) {
 			temp = new Pawn(0);
 			chessBoard.addPiece(1, i, temp);
 		}
-		
+
 		// WHITE (1) - placing pieces
 		temp = new Rook(1);
 		chessBoard.addPiece(7, 0, temp);
 		temp = new Knight(1);
-		chessBoard.addPiece(7, 1, temp);		
+		chessBoard.addPiece(7, 1, temp);
 		temp = new Bishop(1);
 		chessBoard.addPiece(7, 2, temp);
 		temp = new Queen(1);
@@ -156,11 +174,11 @@ public class _GameEngine {
 		chessBoard.addPiece(7, 6, temp);
 		temp = new Rook(1);
 		chessBoard.addPiece(7, 7, temp);
-		for(int i = 0; i < 8; i++){
+		for (int i = 0; i < 8; i++) {
 			temp = new Pawn(1);
 			chessBoard.addPiece(6, i, temp);
 		}
-		
+
 		return chessBoard;
 	}
 
