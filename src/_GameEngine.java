@@ -8,7 +8,7 @@ public class _GameEngine {
 	 */
 	public static void main(String[] args) {
 
-		// VARIABLES, SET UP
+		// VARIABLES, SET UP! cheating this thing!
 
 		Board gameBoard;
 		// BufferedReader input = new BufferedReader(new
