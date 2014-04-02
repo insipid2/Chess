@@ -8,7 +8,7 @@ public class _GameEngine {
 	 */
 	public static void main(String[] args) {
 
-		// VARIABLES, SET UP! cheating this thing!
+		// VARIABLES
 
 		Board gameBoard;
 		// BufferedReader input = new BufferedReader(new
@@ -129,6 +129,11 @@ public class _GameEngine {
 		else{
 			return -1;
 		}
+	}
+	
+	// check to see if the piece at row/col belongs to the specified team
+	private boolean isMyPiece (int row, int col, int team, Board gameBoard){
+		return (gameBoard.getPiece(row, col).team == team);
 	}
 
 	private static Board newGame() {

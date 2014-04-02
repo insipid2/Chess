@@ -36,4 +36,12 @@ public class Board {
 	public void addPiece(int x, int y, Piece gamePiece){
 		gameboard[x][y] = gamePiece;
 	}
+	
+	public void removePiece(int x, int y){
+		gameboard[x][y] = null;
+	}
+	
+	public Piece getPiece(int x, int y){
+		return gameboard[x][y];
+	}
 }
