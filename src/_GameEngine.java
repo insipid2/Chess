@@ -93,34 +93,50 @@ public class _GameEngine {
 
 	}
 
+	// not sure if this will be used yet, or how
 	private static boolean concedeGame(int input) {
 		return input == 1;
 	}
 
+	// is the number from 0-7?
 	private static boolean validRowColInput(int input) {
 		return (input >= 0 && input <= 7);
 	}
 
+	// change the 7-0 numbers (corresponding to the board labels)
+	// into the 0-7 numbers (corresponding to the board array)
+	// the numbers flip, 0=7 , 1=6, ... 7=0
 	private static int rowInputToBoard(int input) {
 		return 7 - input;
 	}
 
+	// change the 0-7 numbers (corresponding to the board array)
+	// into the 7-0 numbers (corresponding to the board labels, numbered in reverse)
+	// the numbers flip, 0=7 , 1=6, ... 7=0
 	private static int rowBoardToOutput(int input) {
 		return 7 - input;
 	}
 
+	// change the a-h letters (corresponding to the board labels the players see)
+	// into the 0-7 numbers (corresponding to the board array)
+	// a=0 ... h=7
 	private static int colInputToBoard(char input) {
 		return Character.valueOf(input) - 97;
 	}
 
+	// change the 0-7 numbers (corresponding to the board array)
+	// into letters a-h (corresponding to the board labels the players see)
 	private static char colBoardToOutput(int input) {
 		return (char) (input + 97);
 	}
 	
+	// change an answer of 1 into a 'yes', other numbers are 'no'
 	private static boolean continueToNext(int input) {
 		return (input == 1);
 	}
 	
+	// change string into 0 or 1, return -1 otherwise
+	// use to process take turn, confirm piece, confirm destination questions
 	private static int stringToOneZero (String input){
 		int tempInt = Integer.parseInt(input);
 		if (tempInt == 1 || tempInt == 0){
