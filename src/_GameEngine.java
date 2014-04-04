@@ -152,6 +152,8 @@ public class _GameEngine {
 		return (gameBoard.getPiece(row, col).team == team);
 	}
 
+	// create and return a new board object with the 
+	// game pieces in the starting position
 	private static Board newGame() {
 		Board chessBoard = new Board();
 		Piece temp;
