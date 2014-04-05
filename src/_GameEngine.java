@@ -28,7 +28,7 @@ public class _GameEngine {
 		int curPieceX, curPieceY = 0;
 		int curTargetX, curTargetY = 0;
 
-		// ACTION!
+		// ACTION! not words....
 		gameBoard = newGame();
 
 		System.out
