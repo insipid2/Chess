@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 public class _GameEngine {
@@ -20,9 +19,7 @@ public class _GameEngine {
 		String tempInput = ""; // temporary storage for player input
 		int tempInt = 0;
 		char tempChar = 'a';
-		boolean rowInputGood = false, colInputGood = false; // whether the
-															// player input is
-															// valid
+		boolean rowInputGood = false, colInputGood = false;	// whether the player input is valid
 		boolean validPiece = false;
 
 		int curPieceX, curPieceY = 0;
@@ -31,8 +28,7 @@ public class _GameEngine {
 		// ACTION! not words....
 		gameBoard = newGame();
 
-		System.out
-				.println("           Welcome to Super Battle Chess 2D VII!!!");
+		System.out.println("           Welcome to Super Battle Chess 2D VII!!!");
 		System.out.println();
 		gameBoard.display();
 
