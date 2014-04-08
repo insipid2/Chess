@@ -33,6 +33,8 @@ public class _GameEngine {
 		gameBoard.display();
 
 		while (gameInProgress) {
+			clearScreen();
+			gameBoard.display();			
 			System.out.println("Player " + colorTurn + "\'s turn.");
 			System.out.println("Enter 1 to take turn, or 0 to concede game");
 			
@@ -146,6 +148,17 @@ public class _GameEngine {
 	// check to see if the piece at row/col belongs to the specified team
 	private boolean isMyPiece (int row, int col, int team, Board gameBoard){
 		return (gameBoard.getPiece(row, col).team == team);
+	}
+	
+	private static void clearScreen()
+	{
+		try{
+			Runtime.getRuntime().exec("cls");
+		}
+		catch(Exception e){
+			
+		}
+			        
 	}
 
 	// create and return a new board object with the 
