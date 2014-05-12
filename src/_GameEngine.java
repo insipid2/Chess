@@ -8,19 +8,19 @@ public class _GameEngine {
 	public static void main(String[] args) {
 
 		// VARIABLES
+		boolean Debug = true;
 
 		Board gameBoard;
-		// BufferedReader input = new BufferedReader(new
-		// InputStreamReader(System.in));
 		Scanner input = new Scanner(System.in);
 		boolean gameInProgress = true;
-		String colorTurn = "b"; // b = black, w = white
+		String colorTurn = "Black";
 
 		String tempInput = ""; // temporary storage for player input
-		int tempInt = 0;
-		char tempChar = 'a';
+		int tempInt = 0;  // input converted to integer, for rows
+		char tempChar = 'a';  // input converted to character, for columns
 		boolean rowInputGood = false, colInputGood = false;	// whether the player input is valid
 		boolean validPiece = false;
+		boolean validDest = false;
 
 		int curPieceX, curPieceY = 0;
 		int curTargetX, curTargetY = 0;
@@ -41,10 +41,10 @@ public class _GameEngine {
 			
 			
 
-			// piece selection loop
+			// Choose a piece to move
 			while (!validPiece) {
 				
-				// 
+				// choose column of piece to move
 				while (!rowInputGood) {
 					System.out.println("Player " + colorTurn + "\'s turn, choose a piece to move.");
 					System.out.print("Enter the row number: ");
@@ -53,14 +53,16 @@ public class _GameEngine {
 						tempInt = rowInputToBoard(Integer.parseInt(tempInput));
 						rowInputGood = true;
 						
-					} catch (NumberFormatException nfe) {
+					}
+					catch (NumberFormatException nfe) {
 						System.out.println("  *dood. numbers only, 0 to 7");
 					}
 
 				}
 				curPieceX = tempInt;
+				rowInputGood = false;
 				
-
+				// choose row of piece to move
 				while (!colInputGood) {
 					System.out.println("Black's turn, choose a piece to move.");
 					System.out.print("Enter the column number: ");
@@ -78,14 +80,32 @@ public class _GameEngine {
 						case 'h':
 							colInputGood = true;
 						}
-					} catch (NumberFormatException nfe) {
+					}
+					catch (NumberFormatException nfe) {
 						System.out.println("  *dood. letters only, a to h");
 					}
 
 				}
 				curPieceY = Character.getNumericValue(tempChar);
+				colInputGood = false;
+				
+				// now choose a destination for that piece
+				while(!validDest){
+					System.out.print("Enter the row number of destination");
+					tempInput = input.next();
+				}
 
 			}
+			
+			// end of turn, change to other player
+			if(colorTurn == "Black"){
+				colorTurn = "White";
+			}
+			else{
+				colorTurn = "Black";
+			}
+			validPiece = false;
+			
 
 		}
 
@@ -152,12 +172,16 @@ public class _GameEngine {
 	
 	private static void clearScreen()
 	{
-		try{
+		/*try{
 			Runtime.getRuntime().exec("cls");
 		}
 		catch(Exception e){
 			
-		}
+		} */
+		
+		// temp solution!
+		System.out.println("***SCREEN REFRESH***");
+		System.out.println();
 			        
 	}
 
