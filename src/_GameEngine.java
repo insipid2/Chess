@@ -2,240 +2,252 @@ import java.util.Scanner;
 
 public class _GameEngine {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
 
-		// VARIABLES
-		boolean Debug = true;
+        // VARIABLES
+        Board gameBoard = null;
+        Scanner input = new Scanner(System.in);
+        boolean hasPotentialDesire = true;		
 
-		Board gameBoard;
-		Scanner input = new Scanner(System.in);
-		boolean gameInProgress = true;
-		String colorTurn = "Black";
+        String tempInput = ""; // temporary storage for player input
+        int tempInt = 0;  // input converted to integer, for rows
+        char tempChar = 'a';  // input converted to character, for columns
 
-		String tempInput = ""; // temporary storage for player input
-		int tempInt = 0;  // input converted to integer, for rows
-		char tempChar = 'a';  // input converted to character, for columns
-		boolean rowInputGood = false, colInputGood = false;	// whether the player input is valid
-		boolean validPiece = false;
-		boolean validDest = false;
+        int curPieceX, curPieceY = 0;
+        int curTargetX, curTargetY = 0;
 
-		int curPieceX, curPieceY = 0;
-		int curTargetX, curTargetY = 0;
+        // Game State, whose turn is it?
+        String colorTurn = "Black";
 
-		// ACTION! not words....
-		gameBoard = newGame();
+        // Turn State, where are they in choosing their move?
+        // State 0 - no game in progress, start new game?
+        // State 1 - Turn start, take turn or concede?
+        // State 2 - Piece selection - ROW
+        // State 3 - Piece selection - COLUMN
+        // State 4 - Piece selection - Confirm?
+        // State 5 - Destination selection - ROW
+        // State 6 - Destination selection - COLUMN
+        // State 7 - Destination selection - Confirm?
+        // State 8 - Update Board, end turn
+        int gameState = 0;
 
-		System.out.println("           Welcome to Super Battle Chess 2D VII!!!");
-		System.out.println();
-		gameBoard.display();
 
-		while (gameInProgress) {
-			clearScreen();
-			gameBoard.display();			
-			System.out.println("Player " + colorTurn + "\'s turn.");
-			System.out.println("Enter 1 to take turn, or 0 to concede game");
-			
-			
-			
 
-			// Choose a piece to move
-			while (!validPiece) {
-				
-				// choose column of piece to move
-				while (!rowInputGood) {
-					System.out.println("Player " + colorTurn + "\'s turn, choose a piece to move.");
-					System.out.print("Enter the row number: ");
-					tempInput = input.next();
-					try {
-						tempInt = rowInputToBoard(Integer.parseInt(tempInput));
-						rowInputGood = true;
-						
-					}
-					catch (NumberFormatException nfe) {
-						System.out.println("  *dood. numbers only, 0 to 7");
-					}
+        while (hasPotentialDesire) {
+        
+            // Program Start, or post-game
+            // Want to start a new game?
+            if(gameState == 0){
+                System.out.println("Would you like to start a new game?");
+                System.out.println("Enter 1 for new game, 0 to exit SBC2DVII");
+                tempInput = input.next();
+                if(tempInput.equals("0")){
+                    System.out.println("Thank you for playing!");
+                    System.exit(0);
+                }
+                else if(tempInput.equals("1")){
+                    // Create the Game Board
+                    gameBoard = newGame();
+                    gameState++;
+                }
+                else{
+                    printInvalidInput();
+                }
+            }
+            
 
-				}
-				curPieceX = tempInt;
-				rowInputGood = false;
-				
-				// choose row of piece to move
-				while (!colInputGood) {
-					System.out.println("Black's turn, choose a piece to move.");
-					System.out.print("Enter the column number: ");
-					tempInput = input.next();
-					try {
-						tempChar = tempInput.charAt(0);
-						switch (tempChar) {
-						case 'a':
-						case 'b':
-						case 'c':
-						case 'd':
-						case 'e':
-						case 'f':
-						case 'g':
-						case 'h':
-							colInputGood = true;
-						}
-					}
-					catch (NumberFormatException nfe) {
-						System.out.println("  *dood. letters only, a to h");
-					}
 
-				}
-				curPieceY = Character.getNumericValue(tempChar);
-				colInputGood = false;
-				
-				// now choose a destination for that piece
-				while(!validDest){
-					System.out.print("Enter the row number of destination");
-					tempInput = input.next();
-				}
 
-			}
-			
-			// end of turn, change to other player
-			if(colorTurn == "Black"){
-				colorTurn = "White";
-			}
-			else{
-				colorTurn = "Black";
-			}
-			validPiece = false;
-			
+        System.out.println("           Welcome to Super Battle Chess 2D VII!!!");
+        System.out.println();
+        gameBoard.display();
 
-		}
 
-	}
+        
+            clearScreen();
+            gameBoard.display();
 
-	// not sure if this will be used yet, or how
-	private static boolean concedeGame(int input) {
-		return input == 1;
-	}
+            if(gameState == 1){
+                System.out.println("Enter 1 to take turn");
+            }
+            
+            
+          
 
-	// is the number from 0-7?
-	private static boolean validRowColInput(int input) {
-		return (input >= 0 && input <= 7);
-	}
 
-	// change the 7-0 numbers (corresponding to the board labels)
-	// into the 0-7 numbers (corresponding to the board array)
-	// the numbers flip, 0=7 , 1=6, ... 7=0
-	private static int rowInputToBoard(int input) {
-		return 7 - input;
-	}
 
-	// change the 0-7 numbers (corresponding to the board array)
-	// into the 7-0 numbers (corresponding to the board labels, numbered in reverse)
-	// the numbers flip, 0=7 , 1=6, ... 7=0
-	private static int rowBoardToOutput(int input) {
-		return 7 - input;
-	}
 
-	// change the a-h letters (corresponding to the board labels the players see)
-	// into the 0-7 numbers (corresponding to the board array)
-	// a=0 ... h=7
-	private static int colInputToBoard(char input) {
-		return Character.valueOf(input) - 97;
-	}
 
-	// change the 0-7 numbers (corresponding to the board array)
-	// into letters a-h (corresponding to the board labels the players see)
-	private static char colBoardToOutput(int input) {
-		return (char) (input + 97);
-	}
-	
-	// change an answer of 1 into a 'yes', other numbers are 'no'
-	private static boolean continueToNext(int input) {
-		return (input == 1);
-	}
-	
-	// change string into 0 or 1, return -1 otherwise
-	// use to process take turn, confirm piece, confirm destination questions
-	private static int stringToOneZero (String input){
-		int tempInt = Integer.parseInt(input);
-		if (tempInt == 1 || tempInt == 0){
-			return tempInt;
-		}
-		else{
-			return -1;
-		}
-	}
-	
-	// check to see if the piece at row/col belongs to the specified team
-	private boolean isMyPiece (int row, int col, int team, Board gameBoard){
-		return (gameBoard.getPiece(row, col).team == team);
-	}
-	
-	private static void clearScreen()
-	{
-		/*try{
+        }
+
+        System.out.println("GAME OVER");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // not sure if this will be used yet, or how
+    private static boolean concedeGame(int input) {
+        return input == 1;
+    }
+
+    // is the number from 0-7?
+    private static boolean validRowColInput(int input) {
+        return (input >= 0 && input <= 7);
+    }
+
+    // change the 7-0 numbers (corresponding to the board labels)
+    // into the 0-7 numbers (corresponding to the board array)
+    // the numbers flip, 0=7 , 1=6, ... 7=0
+    private static int rowInputToBoard(int input) {
+        return 7 - input;
+    }
+
+    // change the 0-7 numbers (corresponding to the board array)
+    // into the 7-0 numbers (corresponding to the board labels, numbered in reverse)
+    // the numbers flip, 0=7 , 1=6, ... 7=0
+    private static int rowBoardToOutput(int input) {
+        return 7 - input;
+    }
+
+    // change the a-h letters (corresponding to the board labels the players see)
+    // into the 0-7 numbers (corresponding to the board array)
+    // a=0 ... h=7
+    private static int colInputToBoard(char input) {
+        return Character.valueOf(input) - 97;
+    }
+
+    // change the 0-7 numbers (corresponding to the board array)
+    // into letters a-h (corresponding to the board labels the players see)
+    private static char colBoardToOutput(int input) {
+        return (char) (input + 97);
+    }
+
+    // change an answer of 1 into a 'yes', other numbers are 'no'
+    private static boolean continueToNext(int input) {
+        return (input == 1);
+    }
+
+    // change string into 0 or 1, return -1 otherwise
+    // use to process take turn, confirm piece, confirm destination questions
+    private static int stringToOneZero (String input){
+        int tempInt = Integer.parseInt(input);
+        if (tempInt == 1 || tempInt == 0){
+            return tempInt;
+        }
+        else{
+            return -1;
+        }
+    }
+
+    // check to see if the piece at row/col belongs to the specified team
+    private boolean isMyPiece (int row, int col, int team, Board gameBoard){
+        return (gameBoard.getPiece(row, col).team == team);
+    }
+
+    //Invalid input, let the player know
+    private static void printInvalidInput(){
+        System.out.println("Ouch, what do you do?");
+    }
+    
+    // Displays whose turn it is, and 
+    // whether they are in the process of choosing a piece or a destination
+    private static void printHeader(String colorTurn, int turnState){
+        System.out.println(colorTurn + "\'s turn.");
+        // State 1 - Piece selection - ROW
+        // State 2 - Piece selection - COLUMN
+        // State 3 - Destination selection - ROW
+        // State 4 - Destination selection - COLUMN
+        // State 5 - Update Board, end turn
+        if(turnState < 3){
+            System.out.println("Select which Piece to move");
+        }
+        else{
+            System.out.println("Select where to move the Piece");
+        }
+    }
+    
+    private static void clearScreen()
+    {
+        /*try{
 			Runtime.getRuntime().exec("cls");
 		}
 		catch(Exception e){
-			
+
 		} */
-		
-		// temp solution!
-		System.out.println("***SCREEN REFRESH***");
-		System.out.println();
-			        
-	}
 
-	// create and return a new board object with the 
-	// game pieces in the starting position
-	private static Board newGame() {
-		Board chessBoard = new Board();
-		Piece temp;
+        // temp solution!
+        System.out.println("***SCREEN REFRESH***");
+        System.out.println();
 
-		// BLACK (0) - placing pieces
-		temp = new Rook(0);
-		chessBoard.addPiece(0, 0, temp);
-		temp = new Knight(0);
-		chessBoard.addPiece(0, 1, temp);
-		temp = new Bishop(0);
-		chessBoard.addPiece(0, 2, temp);
-		temp = new Queen(0);
-		chessBoard.addPiece(0, 3, temp);
-		temp = new King(0);
-		chessBoard.addPiece(0, 4, temp);
-		temp = new Bishop(0);
-		chessBoard.addPiece(0, 5, temp);
-		temp = new Knight(0);
-		chessBoard.addPiece(0, 6, temp);
-		temp = new Rook(0);
-		chessBoard.addPiece(0, 7, temp);
-		for (int i = 0; i < 8; i++) {
-			temp = new Pawn(0);
-			chessBoard.addPiece(1, i, temp);
-		}
+    }
 
-		// WHITE (1) - placing pieces
-		temp = new Rook(1);
-		chessBoard.addPiece(7, 0, temp);
-		temp = new Knight(1);
-		chessBoard.addPiece(7, 1, temp);
-		temp = new Bishop(1);
-		chessBoard.addPiece(7, 2, temp);
-		temp = new Queen(1);
-		chessBoard.addPiece(7, 3, temp);
-		temp = new King(1);
-		chessBoard.addPiece(7, 4, temp);
-		temp = new Bishop(1);
-		chessBoard.addPiece(7, 5, temp);
-		temp = new Knight(1);
-		chessBoard.addPiece(7, 6, temp);
-		temp = new Rook(1);
-		chessBoard.addPiece(7, 7, temp);
-		for (int i = 0; i < 8; i++) {
-			temp = new Pawn(1);
-			chessBoard.addPiece(6, i, temp);
-		}
+    // create and return a new board object with the 
+    // game pieces in the starting position
+    private static Board newGame() {
+        Board chessBoard = new Board();
+        Piece temp;
 
-		return chessBoard;
-	}
+        // BLACK (0) - placing pieces
+        temp = new Rook(0);
+        chessBoard.addPiece(0, 0, temp);
+        temp = new Knight(0);
+        chessBoard.addPiece(0, 1, temp);
+        temp = new Bishop(0);
+        chessBoard.addPiece(0, 2, temp);
+        temp = new Queen(0);
+        chessBoard.addPiece(0, 3, temp);
+        temp = new King(0);
+        chessBoard.addPiece(0, 4, temp);
+        temp = new Bishop(0);
+        chessBoard.addPiece(0, 5, temp);
+        temp = new Knight(0);
+        chessBoard.addPiece(0, 6, temp);
+        temp = new Rook(0);
+        chessBoard.addPiece(0, 7, temp);
+        for (int i = 0; i < 8; i++) {
+            temp = new Pawn(0);
+            chessBoard.addPiece(1, i, temp);
+        }
+
+        // WHITE (1) - placing pieces
+        temp = new Rook(1);
+        chessBoard.addPiece(7, 0, temp);
+        temp = new Knight(1);
+        chessBoard.addPiece(7, 1, temp);
+        temp = new Bishop(1);
+        chessBoard.addPiece(7, 2, temp);
+        temp = new Queen(1);
+        chessBoard.addPiece(7, 3, temp);
+        temp = new King(1);
+        chessBoard.addPiece(7, 4, temp);
+        temp = new Bishop(1);
+        chessBoard.addPiece(7, 5, temp);
+        temp = new Knight(1);
+        chessBoard.addPiece(7, 6, temp);
+        temp = new Rook(1);
+        chessBoard.addPiece(7, 7, temp);
+        for (int i = 0; i < 8; i++) {
+            temp = new Pawn(1);
+            chessBoard.addPiece(6, i, temp);
+        }
+
+        return chessBoard;
+    }
 
 }
