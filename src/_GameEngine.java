@@ -13,11 +13,7 @@ public class _GameEngine {
         boolean hasPotentialDesire = true;		
 
         String tempInput = ""; // temporary storage for player input
-        int tempInt = 0;  // input converted to integer, for rows
-        char tempChar = 'a';  // input converted to character, for columns
-
-        int curPieceX, curPieceY = 0;
-        int curTargetX, curTargetY = 0;
+        boolean invalidInput = false;
 
         // Game State, whose turn is it?
         String colorTurn = "Black";
@@ -38,14 +34,15 @@ public class _GameEngine {
 
         while (hasPotentialDesire) {
         
-            // Program Start, or post-game
+            // 0 - Program Start
             // Want to start a new game?
             if(gameState == 0){
-                System.out.println("Would you like to start a new game?");
-                System.out.println("Enter 1 for new game, 0 to exit SBC2DVII");
+                System.out.println("How about a nice game of Chess?");
+                System.out.println("Enter 1 for new game, 0 to exit.");
                 tempInput = input.next();
+                
                 if(tempInput.equals("0")){
-                    System.out.println("Thank you for playing!");
+                    System.out.println("You cannot lose if you do not play.");
                     System.exit(0);
                 }
                 else if(tempInput.equals("1")){
@@ -58,27 +55,42 @@ public class _GameEngine {
                 }
             }
             
-
-
-
-        System.out.println("           Welcome to Super Battle Chess 2D VII!!!");
-        System.out.println();
-        gameBoard.display();
-
-
-        
-            clearScreen();
-            gameBoard.display();
-
-            if(gameState == 1){
-                System.out.println("Enter 1 to take turn");
+            // 1 - Beginning of turn
+            // Play or concede?
+            if (gameState == 1){
+                clearScreen();
+                gameBoard.display();
+                if(invalidInput){
+                    invalidInput = false;
+                    printInvalidInput();
+                }
+                printHeader(colorTurn, gameState);
+                System.out.print("Enter 1 to take turn, or 0 to concede: ");
+                tempInput = input.next();
+                
+                if(tempInput.equals("0")){
+                    System.out.println();
+                    System.out.println(colorTurn + " forfeits the game.");
+                    System.out.println();
+                    gameState--;
+                }
+                else if(tempInput.equals("1")){
+                    gameState++;
+                }
+                else{
+                    invalidInput = true;
+                }
             }
             
+            if (gameState == 2){
+                clearScreen();
+                gameBoard.display();
+                printHeader(colorTurn, gameState);
+                System.out.print("Enter the row number: (0-7) ");
+            }
             
-          
 
-
-
+            //System.out.println("           Welcome to Super Battle Chess 2D VII!!!");
 
 
         }
@@ -89,77 +101,8 @@ public class _GameEngine {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    // not sure if this will be used yet, or how
-    private static boolean concedeGame(int input) {
-        return input == 1;
-    }
-
-    // is the number from 0-7?
-    private static boolean validRowColInput(int input) {
-        return (input >= 0 && input <= 7);
-    }
-
-    // change the 7-0 numbers (corresponding to the board labels)
-    // into the 0-7 numbers (corresponding to the board array)
-    // the numbers flip, 0=7 , 1=6, ... 7=0
-    private static int rowInputToBoard(int input) {
-        return 7 - input;
-    }
-
-    // change the 0-7 numbers (corresponding to the board array)
-    // into the 7-0 numbers (corresponding to the board labels, numbered in reverse)
-    // the numbers flip, 0=7 , 1=6, ... 7=0
-    private static int rowBoardToOutput(int input) {
-        return 7 - input;
-    }
-
-    // change the a-h letters (corresponding to the board labels the players see)
-    // into the 0-7 numbers (corresponding to the board array)
-    // a=0 ... h=7
-    private static int colInputToBoard(char input) {
-        return Character.valueOf(input) - 97;
-    }
-
-    // change the 0-7 numbers (corresponding to the board array)
-    // into letters a-h (corresponding to the board labels the players see)
-    private static char colBoardToOutput(int input) {
-        return (char) (input + 97);
-    }
-
-    // change an answer of 1 into a 'yes', other numbers are 'no'
-    private static boolean continueToNext(int input) {
-        return (input == 1);
-    }
-
-    // change string into 0 or 1, return -1 otherwise
-    // use to process take turn, confirm piece, confirm destination questions
-    private static int stringToOneZero (String input){
-        int tempInt = Integer.parseInt(input);
-        if (tempInt == 1 || tempInt == 0){
-            return tempInt;
-        }
-        else{
-            return -1;
-        }
-    }
-
-    // check to see if the piece at row/col belongs to the specified team
-    private boolean isMyPiece (int row, int col, int team, Board gameBoard){
-        return (gameBoard.getPiece(row, col).team == team);
-    }
-
+    
+    
     //Invalid input, let the player know
     private static void printInvalidInput(){
         System.out.println("Ouch, what do you do?");
@@ -169,21 +112,25 @@ public class _GameEngine {
     // whether they are in the process of choosing a piece or a destination
     private static void printHeader(String colorTurn, int turnState){
         System.out.println(colorTurn + "\'s turn.");
-        // State 1 - Piece selection - ROW
-        // State 2 - Piece selection - COLUMN
-        // State 3 - Destination selection - ROW
-        // State 4 - Destination selection - COLUMN
-        // State 5 - Update Board, end turn
-        if(turnState < 3){
+        // Turn State, where are they in choosing their move?
+        // State 0 - no game in progress, start new game?
+        // State 1 - Turn start, take turn or concede?
+        // State 2 - Piece selection - ROW
+        // State 3 - Piece selection - COLUMN
+        // State 4 - Piece selection - Confirm?
+        // State 5 - Destination selection - ROW
+        // State 6 - Destination selection - COLUMN
+        // State 7 - Destination selection - Confirm?
+        // State 8 - Update Board, end turn
+        if(turnState == 2 || turnState == 3 || turnState == 4){
             System.out.println("Select which Piece to move");
         }
-        else{
+        else if(turnState == 5 || turnState == 6 || turnState == 7){
             System.out.println("Select where to move the Piece");
         }
     }
     
-    private static void clearScreen()
-    {
+    private static void clearScreen(){
         /*try{
 			Runtime.getRuntime().exec("cls");
 		}
