@@ -141,7 +141,7 @@ public class _GameEngine {
             
             // 4 - Piece Selection, confirm
             if(gameState == 4){
-                arrayRowInt = rowConvert(inputRowInt);
+                arrayRowInt = rowUItoArray(inputRowInt);
                 arrayColInt = colUItoArray(inputColChar);
                 clearScreen();                
                 gameBoard.display();
@@ -159,7 +159,7 @@ public class _GameEngine {
                     }
                     else if(tempInput.equals("1")){
                         gameState++;
-                        mySelectedPiece = gameBoard.getPiece(arrayRowInt, arrayColInt);                        
+                        mySelectedPiece = gameBoard.getPiece(inputRowInt, inputColChar);                        
                     }
                     else{
                         invalidInput = true;
@@ -192,17 +192,22 @@ public class _GameEngine {
     // check if the space at row, column (array) in the given board contains a piece belonging to specified color
     private static boolean isMyPiece (Board gameBoard, int row, int col, String sTeam){
         int iTeam = -1;
-        if (sTeam == "black"){
+        if (sTeam.toLowerCase() == "black"){
             iTeam = 0;
         }
-        else if (sTeam == "white"){
+        else if (sTeam.toLowerCase() == "white"){
             iTeam = 1;
         }
         return (iTeam == gameBoard.getPiece(row, col).team);
     }
     
-    // convert pre-validated row number to/from player input to/from internal array number
-    private static int rowConvert(int input){
+    // convert pre-validated row number from player input to internal array number
+    private static int rowUItoArray(int input){
+        return 7 - input;
+    }
+    
+ // convert row number from internal array number to player input
+    private static int rowArraytoUI(int input){
         return 7 - input;
     }
     
