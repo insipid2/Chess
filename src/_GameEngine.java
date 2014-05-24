@@ -159,7 +159,7 @@ public class _GameEngine {
                     }
                     else if(tempInput.equals("1")){
                         gameState++;
-                        mySelectedPiece = gameBoard.getPiece(inputRowInt, inputColChar);                        
+                        mySelectedPiece = gameBoard.getPiece(arrayRowInt, arrayColInt);                        
                     }
                     else{
                         invalidInput = true;
@@ -192,13 +192,15 @@ public class _GameEngine {
     // check if the space at row, column (array) in the given board contains a piece belonging to specified color
     private static boolean isMyPiece (Board gameBoard, int row, int col, String sTeam){
         int iTeam = -1;
-        if (sTeam.toLowerCase() == "black"){
+        Piece tempPiece = gameBoard.getPiece(row, col);
+        int tempTeam = tempPiece.team;
+        if (sTeam.toLowerCase().equals("black")){
             iTeam = 0;
         }
-        else if (sTeam.toLowerCase() == "white"){
+        else if (sTeam.toLowerCase().equals("white")){
             iTeam = 1;
         }
-        return (iTeam == gameBoard.getPiece(row, col).team);
+        return (iTeam == tempTeam);
     }
     
     // convert pre-validated row number from player input to internal array number
