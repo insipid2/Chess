@@ -14,7 +14,7 @@ public class _GameEngine {
         boolean hasPotentialDesire = true;		
 
         String tempInput = "";          // temporary storage for player input
-        boolean invalidInput = false;   // flag for whether there has been valid input
+        int invalidInput = 0;   // flag for whether there has been valid input
         int inputRowInt = 0;            // stores row input from player
         char inputColChar = ' ';        // stores column input from player
         int arrayRowInt = 0;            // stores row number corresponding to game board array
@@ -60,7 +60,7 @@ public class _GameEngine {
                     gameState++;
                 }
                 else{
-                    invalidInput = true;
+                    invalidInput = 1;
                 }
             }
             
@@ -84,7 +84,7 @@ public class _GameEngine {
                     gameState++;
                 }
                 else{
-                    invalidInput = true;
+                    invalidInput = 1;
                 }
             }
             
@@ -101,7 +101,7 @@ public class _GameEngine {
                     inputRowInt = Integer.parseInt(tempInput);
                 }
                 catch(NumberFormatException nfe){
-                    invalidInput = true;
+                    invalidInput = 1;
                     inputRowInt = -1;
                 }
                 
@@ -109,7 +109,7 @@ public class _GameEngine {
                     gameState++;
                 }
                 else{
-                    invalidInput = true;
+                    invalidInput = 1;
                 }
                 
             }
@@ -125,17 +125,19 @@ public class _GameEngine {
                 tempInput = input.next();
                 
                 if(tempInput.length() == 1){
-                    switch(tempInput.charAt(0)){
+                    
+                    switch(Character.toLowerCase(tempInput.charAt(0))){
                         case 'a': case 'b': case 'c': case 'd':
                         case 'e': case 'f': case 'g': case 'h':
-                            inputColChar = tempInput.charAt(0);
+                            inputColChar = Character.toLowerCase(tempInput.charAt(0));
                             gameState++;
+                            break;
                         default:
-                            invalidInput = true;
+                            invalidInput = 1;
                     }
                 }
                 else{
-                    invalidInput = true;
+                    invalidInput = 1;
                 }                
             }
             
@@ -162,19 +164,77 @@ public class _GameEngine {
                         mySelectedPiece = gameBoard.getPiece(arrayRowInt, arrayColInt);                        
                     }
                     else{
-                        invalidInput = true;
+                        invalidInput = 1;
                     }
                 }
                 else{
-                    invalidInput = true;
+                    invalidInput = 2;
                     gameState = gameState - 2;
                 }
             }
             
-            // 5 - break here to test
+            // 5 - Destination Selection, Row
             if(gameState == 5){
-                System.out.println("piece chosen?");
+                clearScreen();                
+                gameBoard.display();
+                invalidInput = printInvalidInput(invalidInput);
+                System.out.println(gameBoard.getPiece(arrayRowInt, arrayColInt).toString() + " at " + inputRowInt + " - " + inputColChar + " selected");
+                printHeader(colorTurn, gameState);
+                System.out.print("Enter the row number: (0-7) ");
+                tempInput = input.next();
+                
+                try{
+                    inputRowInt = Integer.parseInt(tempInput);
+                }
+                catch(NumberFormatException nfe){
+                    invalidInput = 1;
+                    inputRowInt = -1;
+                }
+                
+                if(inputRowInt >= 0 && inputRowInt <= 7){
+                    gameState++;
+                }
+                else{
+                    invalidInput = 1;
+                }
+                
+                
+            }
+            
+            // 6 - Destination Selection, Column
+            if(gameState == 6){
+                clearScreen();                
+                gameBoard.display();
+                invalidInput = printInvalidInput(invalidInput);
+                printHeader(colorTurn, gameState);
+                System.out.println("Row " + inputRowInt + " selected");
+                System.out.print("Enter the column letter: (a-h) ");
+                tempInput = input.next();
+                
+                if(tempInput.length() == 1){
+                    
+                    switch(Character.toLowerCase(tempInput.charAt(0))){
+                        case 'a': case 'b': case 'c': case 'd':
+                        case 'e': case 'f': case 'g': case 'h':
+                            inputColChar = Character.toLowerCase(tempInput.charAt(0));
+                            gameState++;
+                            break;
+                        default:
+                            invalidInput = 1;
+                    }
+                }
+                else{
+                    invalidInput = 1;
+                }
+                
+            }
+            
+            // 7 - Destination Selection, Confirm
+            if(gameState == 7){
+                // UNDER CONTRUCTION, STOP PROGRAM  //
+                System.out.println("is game state " + gameState + " the end?");
                 System.exit(0);
+                // UNDER CONSTRUCTION, STOP PROGRAM //
             }
             
 
@@ -239,20 +299,28 @@ public class _GameEngine {
             case 5: return 'f';
             case 6: return 'g';
             case 7: return 'h';
-            default: return ' ';        
+            default: return ' ';
         }
     }
     
     // if input is invalid, let the player know
-    private static boolean printInvalidInput(boolean invalidInput){
+    private static int printInvalidInput(int invalidInput){
         
-        if(invalidInput){
-            System.out.println("Ouch, what do you do?");            
-        }        
-        return false;
+        if(invalidInput > 0){
+            // System.out.println("Ouch, what do you do?");
+            switch (invalidInput){
+                // choose 1 to play, 0 to concede
+                // case 1: System.out.println("The hue mens are dead.  We understand BINARY");
+                case 1: System.out.println("**Invalid input, try again**");
+                    break;
+                case 2: System.out.println("**That's not one of your pieces, let's try is again**");
+                    break;
+            }
+        }
+        return 0;
     }
     
-    // Displays whose turn it is, and 
+    // Displays whose turn it is, and
     // whether they are in the process of choosing a piece or a destination
     private static void printHeader(String colorTurn, int turnState){
         System.out.println(colorTurn + "\'s turn.");
