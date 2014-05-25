@@ -231,6 +231,12 @@ public class _GameEngine {
             
             // 7 - Destination Selection, Confirm
             if(gameState == 7){
+                arrayRowInt = rowUItoArray(inputRowInt);
+                arrayColInt = colUItoArray(inputColChar);
+                clearScreen();                
+                gameBoard.display();
+                invalidInput = printInvalidInput(invalidInput);
+                printHeader(colorTurn, gameState);
                 // UNDER CONTRUCTION, STOP PROGRAM  //
                 System.out.println("is game state " + gameState + " the end?");
                 System.exit(0);
