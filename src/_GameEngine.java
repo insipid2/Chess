@@ -19,7 +19,7 @@ public class _GameEngine {
         char inputColChar = ' ';        // stores column input from player
         int arrayRowInt = 0;            // stores row number corresponding to game board array
         int arrayColInt = 0;            // stores column number corresponding to game board array
-        Piece mySelectedPiece;          // stores the piece the player has chosen to move
+        Piece mySelectedPiece = null;          // stores the piece the player has chosen to move
 
         // Game State, whose turn is it?
         String colorTurn = "Black";
@@ -40,7 +40,7 @@ public class _GameEngine {
         //////////////////////
         // USER INTERACTION //
         //////////////////////
-        while (hasPotentialDesire) {
+        while(hasPotentialDesire) {
         
             // 0 - Program Start
             // Want to start a new game?
@@ -150,7 +150,7 @@ public class _GameEngine {
                 invalidInput = printInvalidInput(invalidInput);
                 printHeader(colorTurn, gameState);
                 System.out.println(gameBoard.getPiece(arrayRowInt, arrayColInt).toString() + " at " + inputRowInt + " - " + inputColChar + " selected");
-                if (isMyPiece(gameBoard, arrayRowInt, arrayColInt, colorTurn)){
+                if(isMyPiece(gameBoard, arrayRowInt, arrayColInt, colorTurn)){
                     System.out.println("Congratulations.  You have successfully chosen one of your pieces.");
                     System.out.println("Is this the piece you would like to move?");
                     System.out.println("Enter 1 to confirm piece selection, enter 0 to cancel");
@@ -237,6 +237,32 @@ public class _GameEngine {
                 gameBoard.display();
                 invalidInput = printInvalidInput(invalidInput);
                 printHeader(colorTurn, gameState);
+                System.out.println("Destination space " + inputRowInt + " - " + inputColChar + " selected");
+                if(isValidDest(gameBoard, arrayRowInt, arrayColInt, mySelectedPiece)){
+                    System.out.println("You have entered a valid destination for that piece.");
+                    System.out.println("Is this where you'd like to move it?");
+                    System.out.println("Enter 1 to confirm destination, enter 0 to cancel");
+                    
+                    tempInput = input.next();
+                    
+                    if(tempInput.equals("0")){
+                        gameState = gameState - 2;
+                    }
+                    else if(tempInput.equals("1")){
+                        gameState = gameState + 1;
+                    }
+                    else{
+                        invalidInput = 1;
+                    }
+                }
+                else{
+                    invalidInput = 3;
+                    gameState = gameState - 2;
+                }
+            }
+            
+            // 8 - Update Board, End Turn
+            if(gameState == 8){
                 // UNDER CONTRUCTION, STOP PROGRAM  //
                 System.out.println("is game state " + gameState + " the end?");
                 System.exit(0);
@@ -252,83 +278,116 @@ public class _GameEngine {
         System.out.println("GAME OVER");
     }
 
-
-
-
-    // check if the space at row, column (array) in the given board contains a piece belonging to specified color
-    private static boolean isMyPiece (Board gameBoard, int row, int col, String sTeam){
+    // check if the space at row, column (array) in the given board contains a
+    // piece belonging to specified color
+    private static boolean isMyPiece(Board gameBoard, int row, int col,
+            String sTeam) {
         int iTeam = -1;
         Piece tempPiece = gameBoard.getPiece(row, col);
         int tempTeam = tempPiece.team;
-        if (sTeam.toLowerCase().equals("black")){
+        if (sTeam.toLowerCase().equals("black")) {
             iTeam = 0;
-        }
-        else if (sTeam.toLowerCase().equals("white")){
+        } else if (sTeam.toLowerCase().equals("white")) {
             iTeam = 1;
         }
         return (iTeam == tempTeam);
     }
-    
-    // convert pre-validated row number from player input to internal array number
-    private static int rowUItoArray(int input){
+
+    // **PLACEHOLDER**
+    // check if the space at row, column (array) in the given board is a valid
+    // destination for the specified piece
+    //
+    private static boolean isValidDest(Board gameBoard, int row, int col, Piece myPiece) {
+        // TODO
+        return true;
+
+    }
+
+    // convert pre-validated row number from player input to internal array
+    // number
+    private static int rowUItoArray(int input) {
         return 7 - input;
     }
-    
- // convert row number from internal array number to player input
-    private static int rowArraytoUI(int input){
+
+    // convert row number from internal array number to player input
+    private static int rowArraytoUI(int input) {
         return 7 - input;
     }
-    
-    // convert pre-validated column character from player input to internal array number
-    private static int colUItoArray(char input){
-        switch (input){
-            case 'a': return 0;
-            case 'b': return 1;
-            case 'c': return 2;
-            case 'd': return 3;
-            case 'e': return 4;
-            case 'f': return 5;
-            case 'g': return 6;
-            case 'h': return 7;
-            default: return -1;        
+
+    // convert pre-validated column character from player input to internal
+    // array number
+    private static int colUItoArray(char input) {
+        switch (input) {
+        case 'a':
+            return 0;
+        case 'b':
+            return 1;
+        case 'c':
+            return 2;
+        case 'd':
+            return 3;
+        case 'e':
+            return 4;
+        case 'f':
+            return 5;
+        case 'g':
+            return 6;
+        case 'h':
+            return 7;
+        default:
+            return -1;
         }
     }
-    
- // convert pre-validated column character from internal array number to UI 
-    private static char colArraytoUI(int input){
-        switch (input){
-            case 0: return 'a';
-            case 1: return 'b';
-            case 2: return 'c';
-            case 3: return 'd';
-            case 4: return 'e';
-            case 5: return 'f';
-            case 6: return 'g';
-            case 7: return 'h';
-            default: return ' ';
+
+    // convert pre-validated column character from internal array number to UI
+    private static char colArraytoUI(int input) {
+        switch (input) {
+        case 0:
+            return 'a';
+        case 1:
+            return 'b';
+        case 2:
+            return 'c';
+        case 3:
+            return 'd';
+        case 4:
+            return 'e';
+        case 5:
+            return 'f';
+        case 6:
+            return 'g';
+        case 7:
+            return 'h';
+        default:
+            return ' ';
         }
     }
-    
+
     // if input is invalid, let the player know
-    private static int printInvalidInput(int invalidInput){
-        
-        if(invalidInput > 0){
+    private static int printInvalidInput(int invalidInput) {
+
+        if (invalidInput > 0) {
             // System.out.println("Ouch, what do you do?");
-            switch (invalidInput){
-                // choose 1 to play, 0 to concede
-                // case 1: System.out.println("The hue mens are dead.  We understand BINARY");
-                case 1: System.out.println("**Invalid input, try again**");
-                    break;
-                case 2: System.out.println("**That's not one of your pieces, let's try is again**");
-                    break;
+            switch (invalidInput) {
+            // choose 1 to play, 0 to concede
+            // case 1:
+            // System.out.println("The hue mens are dead.  We understand BINARY");
+            case 1:
+                System.out.println("**Invalid input, try again**");
+                break;
+            case 2:
+                System.out.println("**That's not one of your pieces, let's try is again**");
+                break;
+            case 3:
+                System.out.println("**You can't move there, choose another destiation**");
             }
         }
         return 0;
     }
-    
+
     // Displays whose turn it is, and
     // whether they are in the process of choosing a piece or a destination
-    private static void printHeader(String colorTurn, int turnState){
+    private static void printHeader(String colorTurn, int turnState) {
         System.out.println(colorTurn + "\'s turn.");
         // Turn State, where are they in choosing their move?
         // State 0 - no game in progress, start new game?
@@ -340,21 +399,19 @@ public class _GameEngine {
         // State 6 - Destination selection - COLUMN
         // State 7 - Destination selection - Confirm?
         // State 8 - Update Board, end turn
-        if(turnState == 2 || turnState == 3 || turnState == 4){
+        if (turnState == 2 || turnState == 3 || turnState == 4) {
             System.out.println("Select which Piece to move");
-        }
-        else if(turnState == 5 || turnState == 6 || turnState == 7){
+        } else if (turnState == 5 || turnState == 6 || turnState == 7) {
             System.out.println("Select where to move the Piece");
         }
     }
-    
-    private static void clearScreen(){
-        /*try{
-			Runtime.getRuntime().exec("cls");
-		}
-		catch(Exception e){
 
-		} */
+    private static void clearScreen() {
+        /*
+         * try{ Runtime.getRuntime().exec("cls"); } catch(Exception e){
+         * 
+         * }
+         */
 
         // temp solution!
         System.out.println("***SCREEN REFRESH***");
@@ -362,7 +419,7 @@ public class _GameEngine {
 
     }
 
-    // create and return a new board object with the 
+    // create and return a new board object with the
     // game pieces in the starting position
     private static Board newGame() {
         Board chessBoard = new Board();
