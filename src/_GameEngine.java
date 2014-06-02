@@ -178,7 +178,7 @@ public class _GameEngine {
                 clearScreen();                
                 gameBoard.display();
                 invalidInput = printInvalidInput(invalidInput);
-                System.out.println(gameBoard.getPiece(arrayRowInt, arrayColInt).toString() + " at " + inputRowInt + " - " + inputColChar + " selected");
+                System.out.println(mySelectedPiece.toString() + " at " + inputRowInt + " - " + inputColChar + " selected");
                 printHeader(colorTurn, gameState);
                 System.out.print("Enter the row number: (0-7) ");
                 tempInput = input.next();
