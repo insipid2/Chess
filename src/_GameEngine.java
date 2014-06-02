@@ -14,12 +14,14 @@ public class _GameEngine {
         boolean hasPotentialDesire = true;		
 
         String tempInput = "";          // temporary storage for player input
-        int invalidInput = 0;   // flag for whether there has been valid input
+        int invalidInput = 0;           // flag for whether there has been valid input
         int inputRowInt = 0;            // stores row input from player
         char inputColChar = ' ';        // stores column input from player
         int arrayRowInt = 0;            // stores row number corresponding to game board array
         int arrayColInt = 0;            // stores column number corresponding to game board array
-        Piece mySelectedPiece = null;          // stores the piece the player has chosen to move
+        Piece mySelectedPiece = null;   // stores the piece the player has chosen to move
+        int selectedPieceRow = 0;       // stores the row of the confirmed selected piece
+        int selectedPieceCol = 0;       // stores the column of the confirmed selected piece
 
         // Game State, whose turn is it?
         String colorTurn = "Black";
@@ -161,7 +163,9 @@ public class _GameEngine {
                     }
                     else if(tempInput.equals("1")){
                         gameState++;
-                        mySelectedPiece = gameBoard.getPiece(arrayRowInt, arrayColInt);                        
+                        mySelectedPiece = gameBoard.getPiece(arrayRowInt, arrayColInt);
+                        selectedPieceRow = arrayRowInt;
+                        selectedPieceCol = arrayColInt;
                     }
                     else{
                         invalidInput = 1;
