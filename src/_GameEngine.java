@@ -44,15 +44,23 @@ public class _GameEngine {
         //////////////////////
         while(hasPotentialDesire) {
         
+            // 99 - All
+            // Combining all states??
+            /*
+            
+
+
+             */
+            
             // 0 - Program Start
             // Want to start a new game?
             if(gameState == 0){
                 invalidInput = printInvalidInput(invalidInput);
                 System.out.println("How about a nice game of Chess?");
-                System.out.println("Enter 1 for new game, 0 to exit.");
+                System.out.println("Enter 1 for new game, 9 to exit.");
                 tempInput = input.next();
                 
-                if(tempInput.equals("0")){
+                if(tempInput.equals("9")){
                     System.out.println("You cannot lose if you do not play.");
                     System.exit(0);
                 }
@@ -73,10 +81,10 @@ public class _GameEngine {
                 gameBoard.display();
                 invalidInput = printInvalidInput(invalidInput);
                 printHeader(colorTurn, gameState);
-                System.out.print("Enter 1 to take turn, or 0 to concede: ");
+                System.out.print("Enter 1 to take turn, or 9 to concede: ");
                 tempInput = input.next();
                 
-                if(tempInput.equals("0")){
+                if(tempInput.equals("9")){
                     System.out.println();
                     System.out.println(colorTurn + " forfeits the game.");
                     System.out.println();
@@ -100,7 +108,7 @@ public class _GameEngine {
                 tempInput = input.next();
                 
                 try{
-                    inputRowInt = Integer.parseInt(tempInput);
+                    arrayRowInt = rowUItoArray(Integer.parseInt(tempInput));
                 }
                 catch(NumberFormatException nfe){
                     invalidInput = 1;
@@ -122,7 +130,7 @@ public class _GameEngine {
                 gameBoard.display();
                 invalidInput = printInvalidInput(invalidInput);
                 printHeader(colorTurn, gameState);
-                System.out.println("Row " + inputRowInt + " selected");
+                System.out.println("Row " + rowArraytoUI(arrayRowInt) + " selected");
                 System.out.print("Enter the column letter: (a-h) ");
                 tempInput = input.next();
                 
@@ -131,7 +139,7 @@ public class _GameEngine {
                     switch(Character.toLowerCase(tempInput.charAt(0))){
                         case 'a': case 'b': case 'c': case 'd':
                         case 'e': case 'f': case 'g': case 'h':
-                            inputColChar = Character.toLowerCase(tempInput.charAt(0));
+                            arrayColInt = colUItoArray(Character.toLowerCase(tempInput.charAt(0)));
                             gameState++;
                             break;
                         default:
@@ -144,14 +152,12 @@ public class _GameEngine {
             }
             
             // 4 - Piece Selection, confirm
-            if(gameState == 4){
-                arrayRowInt = rowUItoArray(inputRowInt);
-                arrayColInt = colUItoArray(inputColChar);
+            if(gameState == 4){                
                 clearScreen();                
                 gameBoard.display();
                 invalidInput = printInvalidInput(invalidInput);
                 printHeader(colorTurn, gameState);
-                System.out.println(gameBoard.getPiece(arrayRowInt, arrayColInt).toString() + " at " + inputRowInt + " - " + inputColChar + " selected");
+                System.out.println(gameBoard.getPiece(arrayRowInt, arrayColInt).toString() + " at " + rowArraytoUI(arrayRowInt) + " - " + colArraytoUI(arrayColInt) + " selected");
                 if(isMyPiece(gameBoard, arrayRowInt, arrayColInt, colorTurn)){
                     System.out.println("Congratulations.  You have successfully chosen one of your pieces.");
                     System.out.println("Is this the piece you would like to move?");
@@ -182,7 +188,7 @@ public class _GameEngine {
                 clearScreen();                
                 gameBoard.display();
                 invalidInput = printInvalidInput(invalidInput);
-                System.out.println(mySelectedPiece.toString() + " at " + inputRowInt + " - " + inputColChar + " selected");
+                System.out.println(mySelectedPiece.toString() + " at " + rowArraytoUI(selectedPieceRow) + " - " + colArraytoUI(selectedPieceCol) + " selected");
                 printHeader(colorTurn, gameState);
                 System.out.print("Enter the row number: (0-7) ");
                 tempInput = input.next();
@@ -197,6 +203,7 @@ public class _GameEngine {
                 
                 if(inputRowInt >= 0 && inputRowInt <= 7){
                     gameState++;
+                    arrayRowInt = rowUItoArray(inputRowInt);
                 }
                 else{
                     invalidInput = 1;
@@ -222,6 +229,7 @@ public class _GameEngine {
                         case 'e': case 'f': case 'g': case 'h':
                             inputColChar = Character.toLowerCase(tempInput.charAt(0));
                             gameState++;
+                            arrayColInt = colUItoArray(inputColChar);
                             break;
                         default:
                             invalidInput = 1;
@@ -235,8 +243,8 @@ public class _GameEngine {
             
             // 7 - Destination Selection, Confirm
             if(gameState == 7){
-                arrayRowInt = rowUItoArray(inputRowInt);
-                arrayColInt = colUItoArray(inputColChar);
+                
+                
                 clearScreen();                
                 gameBoard.display();
                 invalidInput = printInvalidInput(invalidInput);
@@ -267,6 +275,8 @@ public class _GameEngine {
             
             // 8 - Update Board, End Turn
             if(gameState == 8){
+                
+                
                 // UNDER CONTRUCTION, STOP PROGRAM  //
                 System.out.println("is game state " + gameState + " the end?");
                 System.exit(0);
