@@ -44,7 +44,7 @@ public class _GameEngine {
         //////////////////////
         while(hasPotentialDesire) {
         
-            // 99 - All
+            // TODO - All
             // Combining all states??
             /*
             
@@ -275,7 +275,7 @@ public class _GameEngine {
             
             // 8 - Update Board, End Turn
             if(gameState == 8){
-                
+                // TODO
                 
                 // UNDER CONTRUCTION, STOP PROGRAM  //
                 System.out.println("is game state " + gameState + " the end?");
@@ -390,7 +390,7 @@ public class _GameEngine {
                 System.out.println("**Invalid input, try again**");
                 break;
             case 2:
-                System.out.println("**That's not one of your pieces, let's try is again**");
+                System.out.println("**That's not one of your pieces, let's try this again**");
                 break;
             case 3:
                 System.out.println("**You can't move there, choose another destiation**");
