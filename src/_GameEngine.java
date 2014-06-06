@@ -15,13 +15,15 @@ public class _GameEngine {
 
         String tempInput = "";          // temporary storage for player input
         int invalidInput = 0;           // flag for whether there has been valid input
-        int inputRowInt = 0;            // stores row input from player
+        int inputRowInt = -1;           // stores row input from player
         char inputColChar = ' ';        // stores column input from player
-        int arrayRowInt = 0;            // stores row number corresponding to game board array
-        int arrayColInt = 0;            // stores column number corresponding to game board array
+        int arrayRowInt = -1;           // stores row number corresponding to game board array
+        int arrayColInt = -1;           // stores column number corresponding to game board array
         Piece mySelectedPiece = null;   // stores the piece the player has chosen to move
-        int selectedPieceRow = 0;       // stores the row of the confirmed selected piece
-        int selectedPieceCol = 0;       // stores the column of the confirmed selected piece
+        int selectedPieceRow = -1;      // stores the row of the confirmed selected piece
+        int selectedPieceCol = -1;      // stores the column of the confirmed selected piece
+        int selectedDestRow = -1;
+        int selectedDestCol = -1;
 
         // Game State, whose turn is it?
         String colorTurn = "Black";
@@ -104,11 +106,11 @@ public class _GameEngine {
                 gameBoard.display();
                 invalidInput = printInvalidInput(invalidInput);
                 printHeader(colorTurn, gameState);
-                System.out.print("Enter the row number: (0-7) ");
+                System.out.print("Enter the row number (0-7), or cancel (9):  ");
                 tempInput = input.next();
                 
-                try{
-                    arrayRowInt = rowUItoArray(Integer.parseInt(tempInput));
+                try{                    
+                    inputRowInt = Integer.parseInt(tempInput);                    
                 }
                 catch(NumberFormatException nfe){
                     invalidInput = 1;
@@ -116,7 +118,11 @@ public class _GameEngine {
                 }
                 
                 if(inputRowInt >= 0 && inputRowInt <= 7){
+                    arrayRowInt = rowUItoArray(inputRowInt);
                     gameState++;
+                }
+                else if(inputRowInt == 9){
+                    gameState--;
                 }
                 else{
                     invalidInput = 1;
@@ -135,11 +141,11 @@ public class _GameEngine {
                 tempInput = input.next();
                 
                 if(tempInput.length() == 1){
-                    
-                    switch(Character.toLowerCase(tempInput.charAt(0))){
+                    inputColChar = Character.toLowerCase(tempInput.charAt(0));
+                    switch(inputColChar){
                         case 'a': case 'b': case 'c': case 'd':
                         case 'e': case 'f': case 'g': case 'h':
-                            arrayColInt = colUItoArray(Character.toLowerCase(tempInput.charAt(0)));
+                            arrayColInt = colUItoArray(inputColChar);
                             gameState++;
                             break;
                         default:
@@ -161,10 +167,11 @@ public class _GameEngine {
                 if(isMyPiece(gameBoard, arrayRowInt, arrayColInt, colorTurn)){
                     System.out.println("Congratulations.  You have successfully chosen one of your pieces.");
                     System.out.println("Is this the piece you would like to move?");
-                    System.out.println("Enter 1 to confirm piece selection, enter 0 to cancel");
+                    System.out.println("Enter 1 to confirm piece selection, enter 9 to cancel");
                     tempInput = input.next();
                     
-                    if(tempInput.equals("0")){
+                    if(tempInput.equals("9")){
+                        
                         gameState = gameState - 2;
                     }
                     else if(tempInput.equals("1")){
@@ -190,7 +197,7 @@ public class _GameEngine {
                 invalidInput = printInvalidInput(invalidInput);
                 System.out.println(mySelectedPiece.toString() + " at " + rowArraytoUI(selectedPieceRow) + " - " + colArraytoUI(selectedPieceCol) + " selected");
                 printHeader(colorTurn, gameState);
-                System.out.print("Enter the row number: (0-7) ");
+                System.out.print("Enter the row (0-7), or cancel (9): ");
                 tempInput = input.next();
                 
                 try{
@@ -202,8 +209,11 @@ public class _GameEngine {
                 }
                 
                 if(inputRowInt >= 0 && inputRowInt <= 7){
-                    gameState++;
                     arrayRowInt = rowUItoArray(inputRowInt);
+                    gameState++;
+                }
+                else if(inputRowInt == 9){
+                    gameState = gameState - 3;
                 }
                 else{
                     invalidInput = 1;
@@ -253,15 +263,17 @@ public class _GameEngine {
                 if(isValidDest(gameBoard, arrayRowInt, arrayColInt, mySelectedPiece)){
                     System.out.println("You have entered a valid destination for that piece.");
                     System.out.println("Is this where you'd like to move it?");
-                    System.out.println("Enter 1 to confirm destination, enter 0 to cancel");
+                    System.out.println("Enter 1 to confirm destination, enter 9 to cancel");
                     
                     tempInput = input.next();
                     
-                    if(tempInput.equals("0")){
+                    if(tempInput.equals("9")){
                         gameState = gameState - 2;
                     }
                     else if(tempInput.equals("1")){
-                        gameState = gameState + 1;
+                        selectedDestRow = arrayRowInt;
+                        selectedDestCol = arrayColInt;
+                        gameState++;
                     }
                     else{
                         invalidInput = 1;
@@ -275,12 +287,12 @@ public class _GameEngine {
             
             // 8 - Update Board, End Turn
             if(gameState == 8){
-                // TODO
+                gameBoard.movePiece(selectedPieceRow, selectedPieceCol, selectedDestRow, selectedDestCol);
+                colorTurn = (colorTurn.equals("Black")) ? "White" : "Black";
+                gameState = 1;
                 
-                // UNDER CONTRUCTION, STOP PROGRAM  //
-                System.out.println("is game state " + gameState + " the end?");
-                System.exit(0);
-                // UNDER CONSTRUCTION, STOP PROGRAM //
+                // TODO
+
             }
             
 
@@ -291,7 +303,7 @@ public class _GameEngine {
 
         System.out.println("GAME OVER");
     }
-
+    
     // check if the space at row, column (array) in the given board contains a
     // piece belonging to specified color
     private static boolean isMyPiece(Board gameBoard, int row, int col,
@@ -311,10 +323,23 @@ public class _GameEngine {
     // check if the space at row, column (array) in the given board is a valid
     // destination for the specified piece
     //
-    private static boolean isValidDest(Board gameBoard, int row, int col, Piece myPiece) {
+    private static boolean isValidDest(Board gameBoard, int row, int col, Piece myPiece){
+        // TODO
+        if(inPiecePath(gameBoard, row, col, myPiece)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+    
+    // **PLACEHOLDER**
+    // check if the given destination is within
+    // the bounds of movement for the given piece
+    private static boolean inPiecePath(Board gameBoard, int row, int col, Piece myPiece){
         // TODO
         return true;
-
     }
 
     // convert pre-validated row number from player input to internal array

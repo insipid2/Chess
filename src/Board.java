@@ -33,15 +33,25 @@ public class Board {
 		
 	}
 	
+	// add given piece to x, y in array
 	public void addPiece(int x, int y, Piece gamePiece){
 		gameboard[x][y] = gamePiece;
 	}
 	
+	// delete piece at given x, y
 	public void removePiece(int x, int y){
 		gameboard[x][y] = null;
 	}
 	
+	// return piece at specified x, y
 	public Piece getPiece(int x, int y){
 		return gameboard[x][y];
+	}
+	
+	// move piece at specified start x, y
+	// to specified destination x, y
+	public void movePiece(int startx, int starty, int destx, int desty){
+	    gameboard[destx][desty] = gameboard[startx][starty];
+	    removePiece(startx, starty);
 	}
 }
